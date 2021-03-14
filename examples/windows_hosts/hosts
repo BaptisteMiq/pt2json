@@ -1,0 +1,9 @@
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+
+# Localhost
+127.0.0.1 localhost
+::1 localhost
+
+# My websites
+192.168.0.1 my.website.example
+192.168.0.1 my.secondwebsite.example
