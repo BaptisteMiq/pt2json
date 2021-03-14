@@ -20,7 +20,9 @@ welcome_text "Hello World"
 
 Some config files are formatted as plain text format (e.g. [Linux interfaces](https://www.cyberciti.biz/faq/setting-up-an-network-interfaces-file/), [Windows hosts](https://en.wikipedia.org/wiki/Hosts_(file)), [some game configuration files](https://docs.fivem.net/docs/server-manual/setting-up-a-server), ...) and may be difficult to interact with using scripts. Converting them to JSON objects allows to easily edit values and save them back to the original file format.
 
-See some examples of usage [here](https://github.com/BaptisteMiq/pt2json/tree/main/examples).
+### Examples of usage
+
+[Editing a Windows hosts file](https://github.com/BaptisteMiq/pt2json/tree/main/examples/windows_hosts)
 
 ## How to use
 
