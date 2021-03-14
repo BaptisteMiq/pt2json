@@ -20,6 +20,8 @@ welcome_text "Hello World"
 
 Some config files are formatted as plain text format (e.g. [Linux interfaces](https://www.cyberciti.biz/faq/setting-up-an-network-interfaces-file/), [Windows hosts](https://en.wikipedia.org/wiki/Hosts_(file)), [some game configuration files](https://docs.fivem.net/docs/server-manual/setting-up-a-server), ...) and may be difficult to interact with using scripts. Converting them to JSON objects allows to easily edit values and save them back to the original file format.
 
+See some examples of usage [here](https://github.com/BaptisteMiq/pt2json/tree/main/examples).
+
 ## How to use
 
 ### Install
@@ -128,9 +130,6 @@ fs.readFile("./plain_text", "utf-8", (err, data) => {
     });
 });
 ```
-
-See more complex examples in the ```examples/``` folder.
-
 
 ## Author & License
 

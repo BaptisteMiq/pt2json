@@ -1,6 +1,6 @@
 {
   "name": "pt2json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert a plain text config file to JSON and vice versa",
   "main": "lib/index.js",
   "types": "lib",
@@ -27,6 +27,14 @@
     "@types/node": "^14.14.34",
     "typescript": "^4.2.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaptisteMiq/pt2json.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BaptisteMiq/pt2json/issues"
+  },
+  "homepage": "https://github.com/BaptisteMiq/pt2json#readme",
   "author": "MIQUEL Baptiste",
   "license": "MIT"
 }
