@@ -41,15 +41,15 @@ const { pt2json, json2pt } = require("pt2json");
 ### Convert Plain Text to JSON
 
 ```js
-const myJson = pt2json("key value");
-// { "key": { "value": "value", index: 0 } }
+const myJson = pt2json("my_key my_value");
+// { "my_key": { "value": "my_value", "index": 0 } }
 ```
 
 ### Convert JSON to Plain Text
 
 ```js
-const myPlainText = json2pt({ "key": "value" });
-// key value
+const myPlainText = json2pt({ "my_key": "my_value" });
+// my_key my_value
 ```
 
 ### Edit a value
