@@ -41,17 +41,15 @@ const { pt2json, json2pt } = require("pt2json");
 ### Convert Plain Text to JSON
 
 ```js
-pt2json("key value").then((jsonObj) => {
-    console.log(jsonObj); // { key: { value: 'value', index: 0 } }
-});
+const myJson = pt2json("key value");
+// { "key": { "value": "value", index: 0 } }
 ```
 
 ### Convert JSON to Plain Text
 
 ```js
-json2pt({ "key": "value" }).then((text) => {
-    console.log(text); // key value
-});
+const myPlainText = json2pt({ "key": "value" });
+// key value
 ```
 
 ### Edit a value
@@ -59,12 +57,11 @@ json2pt({ "key": "value" }).then((text) => {
 ```js
 const data = `key1 key2 value`;
 
-pt2json(data).then((jsonObj) => {
-    jsonObj.key1.key2 = `"Hello World"`;
-    json2pt(jsonObj).then((text) => {
-        console.log(text); // key1 key2 "Hello World"
-    });
-});
+const jsonObj = pt2json(data);
+jsonObj.key1.key2 = `"Hello World"`;
+
+console.log(json2pt(jsonObj));
+// key1 key2 "Hello World"
 ```
 
 ### Push to array
@@ -75,18 +72,15 @@ When multiple keys are found at the same level and with the same name, it create
 const data = `start example1
 start example2`;
 
-pt2json(data).then((jsonObj) => {
-    console.log(jsonObj.start.length); // 2
-    jsonObj.start.push("example3");
-    json2pt(jsonObj).then((text) => {
-        console.log(text);
-        /*
-        start example1
-        start example2
-        start example3
-        */
-    });
-});
+const jsonObj = pt2json(data);
+console.log(jsonObj.start.length); // 2
+jsonObj.start.push("example3");
+console.log(json2pt(jsonObj));
+/*
+start example1
+start example2
+start example3
+*/
 ```
 
 ### Custom index
@@ -98,21 +92,18 @@ const data = `first i0
 second i1
 fourth i2`;
 
-pt2json(data).then((jsonObj) => {
-    jsonObj["third"] = {
-        value: "i1",
-        index: 1 // Will be added after "second" (index 1)
-    }
-    json2pt(jsonObj).then((text) => {
-        console.log(text);
-        /*
-        first i0
-        second i1
-        third i1
-        fourth i2
-        */
-    });
-});
+const jsonObj = pt2json(data);
+jsonObj["third"] = {
+    value: "i1",
+    index: 1 // Will be added after "second" (index 1)
+}
+console.log(json2pt(jsonObj));
+/*
+first i0
+second i1
+third i1
+fourth i2
+*/
 ```
 
 # Read and write files
@@ -123,13 +114,10 @@ const fs = require("fs");
 fs.readFile("./plain_text", "utf-8", (err, data) => {
     if (err) return;
 
-    pt2json(data).then((jsonObj) => {
-        jsonObj.key = "value"
+    const jsonObj = pt2json(data);
+    jsonObj.key = "value";
 
-        json2pt(jsonObj).then((plainTextFile) => {
-            fs.writeFileSync("./new_plain_text", plainTextFile);
-        });
-    });
+    fs.writeFileSync("./new_plain_text", json2pt(jsonObj));
 });
 ```
 

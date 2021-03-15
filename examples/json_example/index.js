@@ -5,7 +5,5 @@ const { json2pt } = require("../../lib/index.js");
 fs.readFile("./sample.json", "utf-8", (err, data) => {
     if (err) return;
 
-    json2pt(JSON.parse(data)).then((fromJson) => {
-        fs.writeFileSync("./sample.txt", fromJson);
-    });
+    fs.writeFileSync("./sample.txt", json2pt(JSON.parse(data)));
 });
