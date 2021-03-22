@@ -5,14 +5,14 @@ const { pt2json, json2pt } = require("../../lib/index.js");
 fs.readFile("./hosts", "utf-8", (err, data) => {
     if (err) return;
 
-    const jsonObj = pt2json(data);
+    const jsonObj = pt2json(data, { comments: true, emptyLines: true });
 
     // Add a key value
     jsonObj["192.168.0.5"] = "other.super.website.com";
 
     // Add a comment to the first line
     jsonObj["__comments"].push({
-        value: "# This comment is at the beggining of the file",
+        value: "# This comment is at the beginning of the file",
         index: -1
     });
 

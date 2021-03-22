@@ -6,3 +6,8 @@ export interface IndexedElement {
 export interface NestedObject {
     [key: string]: any
 }
+
+export interface Options {
+    comments: boolean,
+    emptyLines: boolean
+}

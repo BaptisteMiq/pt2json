@@ -1,4 +1,4 @@
-import { IndexedElement, NestedObject } from "./objStructure";
+import { IndexedElement, NestedObject, Options } from "./objStructure";
 
 let savedIndex = 0;
 const createIndexedElement = (value: string): IndexedElement =>
@@ -7,6 +7,11 @@ const createIndexedElement = (value: string): IndexedElement =>
     index: savedIndex++
 });
 
+const defaultOptions = {
+    comments: true,
+    emptyLines: true
+};
+
 /**
  * @description Converts a plain text file to a JSON object
  * @example 'parent key value' => {"parent":{"key":"value"}}
@@ -14,7 +19,9 @@ const createIndexedElement = (value: string): IndexedElement =>
  * @param data Data to convert
  * @returns A JSON object of the converted plain text file
  */
-export const pt2json = (data: string): NestedObject => {
+export const pt2json = (data: string, _options: Options = defaultOptions): NestedObject => {
+
+    const options = { ...defaultOptions, ..._options };
 
     const startsWithString = (str: string): boolean => {
         return str.startsWith('"') || str.startsWith("'") || str.startsWith('`');
@@ -43,11 +50,12 @@ export const pt2json = (data: string): NestedObject => {
         // Comments
         const commentIndex = l.indexOf("#");
         if (commentIndex !== -1) {
-            if (!res["__comments"]) {
-                res["__comments"] = [];
+            if (options.comments) {
+                if (!res["__comments"]) {
+                    res["__comments"] = [];
+                }
+                res.__comments.push(createIndexedElement(l));
             }
-            res.__comments.push(createIndexedElement(l));
-            // l = l.slice(0, commentIndex); // Remove comments
             return;
         }
 
@@ -60,10 +68,12 @@ export const pt2json = (data: string): NestedObject => {
 
         // Empty lines
         if (l === "") {
-            if (!res["__empty"]) {
-                res["__empty"] = [];
+            if (options.emptyLines) {
+                if (!res["__empty"]) {
+                    res["__empty"] = [];
+                }
+                res.__empty.push(createIndexedElement(l));
             }
-            res.__empty.push(createIndexedElement(l));
             return;
         }
 
