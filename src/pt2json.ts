@@ -9,7 +9,8 @@ const createIndexedElement = (value: string): IndexedElement =>
 
 const defaultOptions = {
     comments: true,
-    emptyLines: true
+    emptyLines: true,
+    tabs: false
 };
 
 /**
@@ -59,7 +60,11 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
             return;
         }
 
-        l = l.trim();
+        if(options.tabs) {
+            l = l.trimRight();
+        } else {
+            l = l.trim();
+        }
 
         // Undefined lines
         if (l === undefined || l === null) {
