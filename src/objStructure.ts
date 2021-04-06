@@ -1,13 +1,29 @@
-export interface IndexedElement {
-    value: string,
-    index: number
-}
+/**
+ * Objects types
+ */
+export type IndexedElement = {
+    value: string;
+    index: number;
+};
 
-export interface NestedObject {
-    [key: string]: any
-}
+export type NestedObject = {
+    [key: string]: any;
+};
 
-export interface Options {
-    comments: boolean,
-    emptyLines: boolean
-}
+/**
+ * Options types
+ */
+export type MakeOptionnal<T> = {
+    [P in keyof T]+?: MakeOptionnal<T[P]>;
+};
+
+export type DefaultOptions = {
+    comments: boolean;
+    emptyLines: boolean;
+    indexed: boolean;
+    tabs: boolean;
+    separator: string,
+    key_separator: string
+};
+
+export type Options = MakeOptionnal<DefaultOptions>;

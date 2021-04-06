@@ -1,16 +1,19 @@
-import { IndexedElement, NestedObject, Options } from "./objStructure";
+import { IndexedElement, NestedObject, DefaultOptions, Options } from "./objStructure";
 
 let savedIndex = 0;
-const createIndexedElement = (value: string): IndexedElement =>
-({
+const createIndexedElement = (value: string, indexed: boolean): IndexedElement | string =>
+(indexed ? {
     value,
     index: savedIndex++
-});
+} : value);
 
-const defaultOptions = {
-    comments: true,
-    emptyLines: true,
-    tabs: false
+const defaultOptions: DefaultOptions = {
+    comments: false,
+    emptyLines: false,
+    tabs: false,
+    indexed: false,
+    separator: "=",
+    key_separator: " "
 };
 
 /**
@@ -20,7 +23,7 @@ const defaultOptions = {
  * @param data Data to convert
  * @returns A JSON object of the converted plain text file
  */
-export const pt2json = (data: string, _options: Options = defaultOptions): NestedObject => {
+export const pt2json = (data: string, _options: Options): NestedObject => {
 
     const options = { ...defaultOptions, ..._options };
 
@@ -37,16 +40,19 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
     const createObj = (cRes: NestedObject, param: string, value: string) => {
         if (cRes[param] && !Array.isArray(cRes[param])) { // Param was a string (already seen), transform it to array
             const v = cRes[param];
-            cRes[param] = [v, createIndexedElement(value)]; // Push existing string and current value
+            cRes[param] = [v, createIndexedElement(value, options.indexed)]; // Push existing string and current value
         } else if (Array.isArray(cRes[param])) { // Param is an array, push into it
-            cRes[param].push(createIndexedElement(value));
+            cRes[param].push(createIndexedElement(value, options.indexed));
         } else { // First time we see param, set as a string
-            cRes[param] = createIndexedElement(value);
+            cRes[param] = createIndexedElement(value, options.indexed);
         }
     }
 
     const res: NestedObject = {};
-    lines.forEach((l) => {
+
+    if(_options) res.__params = _options;
+
+    lines.forEach((l, li) => {
 
         // Comments
         const commentIndex = l.indexOf("#");
@@ -55,12 +61,14 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
                 if (!res["__comments"]) {
                     res["__comments"] = [];
                 }
-                res.__comments.push(createIndexedElement(l));
+                res.__comments.push(createIndexedElement(l, options.indexed));
             }
             return;
         }
 
-        if(options.tabs) {
+        // res["__params"] = {};
+
+        if (options.tabs) {
             l = l.trimRight();
         } else {
             l = l.trim();
@@ -77,12 +85,12 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
                 if (!res["__empty"]) {
                     res["__empty"] = [];
                 }
-                res.__empty.push(createIndexedElement(l));
+                res.__empty.push(createIndexedElement(l, options.indexed));
             }
             return;
         }
 
-        let params = l.split(" ");
+        let params = l.split(options.key_separator || defaultOptions.key_separator);
         let newParams = [];
 
         const matches = [l.match(/\'/g), l.match(/\`/g), l.match(/\"/g)];
@@ -107,7 +115,7 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
                 if (startsWithString(p)) {
                     let currentParam = p;
                     for (let j = i + 1; j < params.length; j++) {
-                        currentParam += " " + params[j]; // Add space because it was removed with split
+                        currentParam += options.key_separator + params[j]; // Add space because it was removed with split
                         i++;
                         if (endsWithString(params[j])) {
                             break;
@@ -121,6 +129,12 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
 
             params = newParams;
 
+        }
+
+        const valueParams = params[params.length - 1].split(new RegExp(`\\s*${options.separator}\\s*`));
+        if (valueParams.length > 1) {
+            params.splice(params.length - 1, 1);
+            params = params.concat(valueParams);
         }
 
         // TODO: Make this recursive...
@@ -150,7 +164,7 @@ export const pt2json = (data: string, _options: Options = defaultOptions): Neste
                 if (!res["__misc"]) {
                     res["__misc"] = [];
                 }
-                res.__misc.push(createIndexedElement(l));
+                res.__misc.push(createIndexedElement(l, options.indexed));
                 break;
         }
     });
