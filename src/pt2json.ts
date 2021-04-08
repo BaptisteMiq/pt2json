@@ -13,7 +13,7 @@ const defaultOptions: DefaultOptions = {
     tabs: false,
     indexed: false,
     separator: "=",
-    key_separator: " "
+    key_separator: "-"
 };
 
 /**

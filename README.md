@@ -103,7 +103,7 @@ You can define options when converting from plain text to json:
 // Default options
 const options = {
     separator: "=", // key / value separator. Default for "key=value".
-    key_separator: " ", // key / key separator. Default for "key1 key2=value".
+    key_separator: "-", // key / key separator. Default for "key1 key2=value".
     comments: false, // Keep comments that starts with "#". Default will not keep them.
     emptyLines: false, // Keep empty lines. Default will not keep them.
     tabs: false, // Left trim the key. Default will trim.
@@ -125,7 +125,7 @@ Note that some options will be automatically applied according to the json objec
 // Default options
 const options = {
     separator: "=", // Same as pt2json separator option
-    key_separator: " " // Same as pt2json key_separator option
+    key_separator: "-" // Same as pt2json key_separator option
 };
 json2pt(file, options);
 ```
@@ -157,7 +157,7 @@ Some properties can have composed keys like:
 
 In plain text:
 
-`key1 key2 key3 = value`
+`key1-key2-key3 = value`
 
 In json:
 
@@ -167,7 +167,7 @@ In json:
 
 Pt2json allows such behaviour by creating nested objects:
 ```js
-const data = `key1 key2 key3 = value`;
+const data = `key1-key2-key3 = value`;
 
 const pt = pt2json(data); // { "key1": { "key2": { "key3": "value" } } }
 pt.key1.key2.key3 = "new value";
@@ -176,13 +176,13 @@ pt.key1.key2.key3 = "new value";
 You can also define custom key separators with the `key_separator` parameter:
 
 ```js
-const data = `key1-key2-key3 = value`;
+const data = `key1->key2->key3 = value`;
 
-const pt = pt2json(data, { "key_separator": "-" }); // { "key1": { "key2": { "key3": "value" } } }
+const pt = pt2json(data, { "key_separator": "->" }); // { "key1": { "key2": { "key3": "value" } } }
 pt.key1.key2.key3 = "new value";
 
-json2pt({"key1":{"key2":{"key3":"value"}}}); // key1 key2 key3=value
-json2pt({"key1":{"key2":{"key3":"value"}}}, { key_separator: "-" }); // key1-key2-key3=value
+json2pt({"key1":{"key2":{"key3":"value"}}}); // key1-key2-key3=value
+json2pt({"key1":{"key2":{"key3":"value"}}}, { key_separator: "->" }); // key1->key2->key3=value
 ```
 
 

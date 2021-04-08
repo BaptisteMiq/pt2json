@@ -2,7 +2,7 @@ import { IndexedElement, NestedObject, Options } from "./objStructure";
 
 let options = {
     separator: "=",
-    key_separator: " "
+    key_separator: "-"
 };
 
 /**
