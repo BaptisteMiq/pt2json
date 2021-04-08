@@ -1,7 +1,7 @@
 {
   "name": "pt2json",
   "version": "2.0.0",
-  "description": "Convert a plain text config file to JSON and vice versa",
+  "description": "Convert a text file to JSON and vice versa",
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
@@ -12,6 +12,11 @@
   },
   "keywords": [
     "plain text",
+    "plain text to json",
+    "plain text conversion",
+    "text json",
+    "text file to json",
+    "text to json",
     "json",
     "config file",
     "converter"
