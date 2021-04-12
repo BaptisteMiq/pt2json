@@ -1,6 +1,6 @@
 {
   "name": "pt2json",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Convert a text file to JSON and vice versa",
   "main": "lib/index.js",
   "types": "lib",
